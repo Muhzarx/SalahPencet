@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090914">
+<meta name="description" content="SALAH PENCET! — game refleks absurd. Berani pecahkan rekor temanmu?">
+<title>SALAH PENCET! — Jangan sampai salah.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+:root{--bg:#090914;--panel:#131326;--line:#292943;--pink:#ff3e81;--cyan:#49e7ff;--yellow:#ffe66d;--white:#f7f7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#28204c 0%,var(--bg) 55%);color:var(--white);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:grid;place-items:center;padding:18px;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(#777 1px,transparent 1px),linear-gradient(90deg,#777 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+.app{width:min(100%,620px);position:relative}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.brand{font-weight:800;letter-spacing:-1.5px;font-size:20px}.brand span{color:var(--pink)}.tag{font:11px 'DM Mono';color:#aaa9c8;border:1px solid var(--line);padding:7px 10px;border-radius:99px}
+.panel{background:linear-gradient(145deg,#17172d,#10101e);border:1px solid #343450;border-radius:24px;padding:clamp(18px,5vw,30px);box-shadow:0 24px 80px #0008;position:relative;overflow:hidden}.panel:after{content:"";position:absolute;width:230px;height:230px;border-radius:50%;background:#ff3e8112;filter:blur(40px);right:-120px;top:-120px;pointer-events:none}
+h1{font-size:clamp(42px,10vw,68px);line-height:.9;letter-spacing:-4px;margin:14px 0 12px;font-weight:800}h1 em{font-style:normal;color:var(--pink)}.sub{color:#b5b4ce;line-height:1.55;font-size:14px;max-width:440px}.eyebrow{font:11px 'DM Mono';letter-spacing:2px;color:var(--cyan)}
+.btn{border:0;border-radius:13px;padding:15px 19px;font:800 15px 'Space Grotesk';cursor:pointer;transition:.15s;touch-action:manipulation}.btn:active{transform:scale(.96)}.primary{background:var(--yellow);color:#171321;box-shadow:0 5px 0 #b79d36}.primary:hover{filter:brightness(1.07);transform:translateY(-2px)}.secondary{background:#252540;color:#fff;border:1px solid #454563}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:24px}.rule{border:1px solid var(--line);border-radius:13px;padding:12px;background:#ffffff05}.rule b{display:block;font-size:12px;margin-bottom:4px}.rule small{font-size:10px;color:#aaa9c8;line-height:1.4}
+.hud{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px}.stat{background:#141427;border:1px solid var(--line);border-radius:12px;padding:9px 13px;flex:1}.stat small{display:block;color:#8888a8;font:10px 'DM Mono';letter-spacing:1px}.stat strong{font-size:22px}.timerbar{height:7px;background:#292943;border-radius:99px;overflow:hidden;margin:0 0 16px}.timerfill{height:100%;width:100%;background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--pink));transition:width .08s linear}
+.arena{min-height:310px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid #363653;background:radial-gradient(ellipse at center,#25213d,#10101e 70%);border-radius:20px;padding:24px;position:relative;overflow:hidden}
+.prompt{font-size:clamp(27px,7vw,43px);font-weight:800;line-height:1.05;letter-spacing:-1.8px;max-width:440px}.hint{font:11px 'DM Mono';color:#9a99b9;margin-top:12px}.targets{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;width:100%}.target{width:clamp(76px,20vw,112px);height:clamp(76px,20vw,112px);border-radius:22px;border:2px solid #ffffff25;font-size:27px;font-weight:800;cursor:pointer;box-shadow:0 6px 0 #0005;transition:transform .12s,filter .12s;touch-action:manipulation}.target:active{transform:scale(.91)}.red{background:#ff4265;color:#3b0715}.blue{background:#4c8cff;color:#071a3b}.green{background:#57d99a;color:#082b1a}.yellow{background:#ffe66d;color:#3b3100}.purple{background:#a77aff;color:#230d43}.white{background:#f4f2ff;color:#201d35}
+.feedback{min-height:25px;margin-top:14px;font-weight:700;font-size:14px}.good{color:#66f0b1}.bad{color:#ff5c83}.hidden{display:none!important}
+.overlay{position:absolute;inset:0;background:#090914eF;display:grid;place-items:center;padding:22px;text-align:center;z-index:5}.resultscore{font-size:76px;line-height:1;font-weight:800;color:var(--yellow);letter-spacing:-5px}.resulttitle{font-size:34px;font-weight:800;letter-spacing:-1.5px;margin:10px}.resultdesc{color:#b5b4ce;font-size:14px;line-height:1.5;max-width:370px}
+.footer{text-align:center;color:#666681;font:10px 'DM Mono';margin-top:14px}.shake{animation:shake .25s}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}@keyframes pop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+@media(max-width:430px){.rules{grid-template-columns:1fr 1fr}.arena{min-height:290px;padding:17px}.hud .stat{padding:8px}.stat strong{font-size:19px}}
+</style>
+</head>
+<body>
+<main class="app">
+ <div class="top"><div class="brand">SALAH<span>PENCET!</span></div><div class="tag">BETA 1.0 · INDONESIA</div></div>
+ <section class="panel" id="home">
+  <div class="eyebrow">TES REFLEKS & OTAK KAMU</div>
+  <h1>JANGAN<br><em>SALAH.</em></h1>
+  <p class="sub">Ikuti instruksi secepat mungkin. Tapi hati-hati… game ini bakal mulai mempermainkan otakmu. Salah sekali? Tamat.</p>
+  <div class="actions"><button class="btn primary" id="start">GAS MAIN →</button><button class="btn secondary" id="how">CARA MAIN</button></div>
+  <div class="rules">
+   <div class="rule"><b>🧠 Baca cepat</b><small>Instruksi berubah setiap ronde.</small></div>
+   <div class="rule"><b>⚡ Jangan lambat</b><small>Waktu makin sedikit.</small></div>
+   <div class="rule"><b>💀 Satu nyawa</b><small>Salah klik langsung game over.</small></div>
+  </div>
+ </section>
+ <section id="game" class="hidden">
+  <div class="hud">
+   <div class="stat"><small>SKOR</small><strong id="score">0</strong></div>
+   <div class="stat"><small>RONDE</small><strong id="round">1</strong></div>
+   <div class="stat"><small>REKOR</small><strong id="best">0</strong></div>
+  </div>
+  <div class="timerbar"><div class="timerfill" id="timer"></div></div>
+  <div class="arena" id="arena">
+   <div class="eyebrow" id="level">RONDE 01</div>
+   <div class="prompt" id="prompt">KLIK YANG MERAH</div>
+   <div class="hint" id="hint">JANGAN KEBANYAKAN MIKIR.</div>
+   <div class="targets" id="targets"></div>
+   <div class="feedback" id="feedback"></div>
+   <div class="overlay hidden" id="overlay">
+    <div>
+     <div class="eyebrow">PERMAINAN SELESAI</div>
+     <div class="resulttitle" id="resulttitle">OTAK KAMU LAG?</div>
+     <div class="resultscore" id="finalscore">0</div>
+     <p class="resultdesc" id="resultdesc">Lumayan. Tapi temanmu mungkin bisa lebih jauh.</p>
+     <div class="actions" style="justify-content:center"><button class="btn primary" id="again">COBA LAGI ↻</button><button class="btn secondary" id="share">BAGIKAN SKOR ↗</button></div>
+    </div>
+   </div>
+  </div>
+ </section>
+ <div class="footer">DIBUAT UNTUK YANG MERASA REFLEKSNYA DEWA · SALAH PENCET!</div>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+let score=0,round=0,best=Number(localStorage.getItem('sp_best')||0),deadline=0,duration=0,raf=0,active=false,current=null,buttons=[];
+$('best').textContent=best;
+const colors=[['MERAH','red','🟥'],['BIRU','blue','🟦'],['HIJAU','green','🟩'],['KUNING','yellow','🟨'],['UNGU','purple','🟪'],['PUTIH','white','⬜']];
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+const tasks=[
+ {make:()=>{let c=rand(colors);return {q:`KLIK YANG ${c[0]}`,hint:'PILIH WARNA YANG DISEBUT.',ok:b=>b.dataset.color===c[1]}}},
+ {make:()=>{let c=rand(colors);return {q:`JANGAN KLIK ${c[0]}!`,hint:'KLIK WARNA LAIN.',ok:b=>b.dataset.color!==c[1]}}},
+ {make:()=>{let n=rand(['1','2','3','4','5']);return {q:`KLIK ANGKA ${n}`,hint:'ANGKA, BUKAN WARNA.',ok:b=>b.dataset.label===n}}},
+ {make:()=>{let c=rand(colors);return {q:`KLIK YANG BUKAN ${c[0]}`,hint:'INSTRUKSI INI SERIUS.',ok:b=>b.dataset.color!==c[1]}}},
+ {make:()=>{let c=rand(colors);return {q:`JANGAN KLIK WARNA ${c[0]}`,hint:'KALI INI KEBALIKANNYA.',ok:b=>b.dataset.color!==c[1]}}}
+];
+function sound(freq=500,ms=70,type='sine'){try{let a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=freq;g.gain.value=.045;o.connect(g);g.connect(a.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+ms/1000);o.stop(a.currentTime+ms/1000)}catch(e){}}
+function start(){score=0;round=0;active=true;$('home').classList.add('hidden');$('game').classList.remove('hidden');$('overlay').classList.add('hidden');next(); }
+function next(){if(!active)return;round++;$('score').textContent=score;$('round').textContent=round;$('level').textContent='RONDE '+String(round).padStart(2,'0');$('feedback').textContent='';$('feedback').className='feedback';
+ let task=rand(tasks).make();current=task;
+ let labels=['1','2','3','4','5','6'];let count=6;let chosen=colors.slice().sort(()=>Math.random()-.5).slice(0,count);
+ let nodes=chosen.map((c,i)=>({color:c[1],emoji:c[2],label:labels[i]}));
+ // Number task uses numbers while color tasks use emoji; both remain visible as a two-part tile.
+ $('prompt').textContent=task.q;$('hint').textContent=task.hint;
+ $('targets').innerHTML='';buttons=[];
+ nodes.forEach(n=>{let b=document.createElement('button');b.className='target '+n.color;b.dataset.color=n.color;b.dataset.label=n.label;b.innerHTML=`<span>${n.emoji}</span><br><small style="font:700 13px 'DM Mono'">${n.label}</small>`;b.addEventListener('click',()=>pick(b));$('targets').appendChild(b);buttons.push(b)});
+ // Ensure at least one valid option and one invalid option for every round.
+ if(!buttons.some(task.ok)) {let b=buttons[0]; if(task.q.includes('JANGAN KLIK')||task.q.includes('BUKAN')) b.dataset.color=colors.find(c=>c[1]!==b.dataset.color)[1];else b.dataset.color=colors[0][1];}
+ duration=Math.max(1150,3900-round*105);deadline=performance.now()+duration;cancelAnimationFrame(raf);tick();
+}
+function tick(){if(!active)return;let left=Math.max(0,deadline-performance.now());$('timer').style.width=(left/duration*100)+'%';if(left<=0){end('KELAMAAN MIKIR 😭');return}raf=requestAnimationFrame(tick)}
+function pick(b){if(!active)return;if(current.ok(b)){score+=10+Math.min(round,20);sound(650+round*10,60);$('feedback').textContent=rand(['AMAN! +POIN','OTAK MASIH NYALA!','SAT SET!','GAS TERUS!']);$('feedback').className='feedback good';next()}else{sound(130,180,'sawtooth');$('arena').classList.remove('shake');void $('arena').offsetWidth;$('arena').classList.add('shake');end('SALAH PENCET! 💀')}}
+function end(title){active=false;cancelAnimationFrame(raf);if(score>best){best=score;localStorage.setItem('sp_best',best)}$('best').textContent=best;$('resulttitle').textContent=title;$('finalscore').textContent=score;$('resultdesc').textContent=score>=200?'GILA. Refleks kamu bukan manusia. Pamerin skor ini!':score>=80?'Lumayan jago! Tapi yakin temanmu nggak bisa lebih tinggi?':'Waduh, otak loading. Coba sekali lagi dan tantang temanmu.';$('overlay').classList.remove('hidden')}
+$('start').onclick=start;$('again').onclick=start;
+$('how').onclick=()=>alert('Cara main:\\n1. Baca instruksi besar di tengah layar.\\n2. Klik tombol yang sesuai.\\n3. Setiap ronde makin cepat.\\n4. Salah klik atau kehabisan waktu = game over.\\n\\nTips: jangan panik. Atau justru panik?');
+$('share').onclick=async()=>{let msg=`Aku dapat ${score} poin di SALAH PENCET! 😭🔥\\nBerani kalahin skorku?`;if(navigator.share){try{await navigator.share({title:'SALAH PENCET!',text:msg,url:location.href})}catch(e){}}else{try{await navigator.clipboard.writeText(msg+'\\n'+location.href);$('share').textContent='TERSALIN ✓'}catch(e){prompt('Salin skor kamu:',msg+' '+location.href)}}};
+})();
+</script>
+</body></html>
